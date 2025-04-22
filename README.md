@@ -1,22 +1,23 @@
 # KMIT Dataverse Transfer Scripts
 
   
-Script to download files from a datafile in Dataverse. Use the official **Data Access API**.
+Script to download files from a datafile in Dataverse. Use the official **Data Access API** and pyDataverse.
 
 
 ## Dataverse File Downloader
 
 A script for downloading all files from a Dataverse dataset using its unique identifier (either DOI or HANDLE).  
-It leverages the official **Data Access API**.
+It leverages the official **Data Access API** and the `pyDataverse` library.
 
 ## Requirements
 
 - Python 3.8+
+- [pyDataverse](https://pydataverse.readthedocs.io/)
 
 Install dependencies:
 
 ```bash
-No dependencies required
+pip install -r requirements.txt
 ````
 
 ## 
@@ -50,4 +51,5 @@ The script will:
 
 ## References
 - [Data Access API - Dataverse Docs](https://guides.dataverse.org/en/5.6/api/dataaccess.html)
+- [pyDataverse Documentation](https://pydataverse.readthedocs.io/)
 

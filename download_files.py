@@ -2,14 +2,14 @@ from pyDataverse.api import NativeApi
 import  os, requests, hashlib
 
 # You need to input an valid API key to download restricted datafiles
-api_token = '94bd9d00-5781-421b-8343-746bfad644ee'
+api_token = 'PUT_YOUR_TOKEN_HERE'
 # Replace this setting with the dataset's persistent ID (DOI or Handle)
-dataset_id = 'hdl:11529/10549105'
+dataset_id = 'DOI_OR_HANDLE'
 # Replace this setting with the dataset's version number
 # By default, the script will download data files from the latest published dataset version (:latest-published). If you want to download files from a draft version, use the :draft option.
 # More information: https://guides.dataverse.org/en/5.6/api/dataaccess.html#download-by-dataset-by-version
 #dataset_version = ':draft'
-#dataset_version = '2.0'
+#dataset_version = '1.0'
 dataset_version = ':latest-published'
 
 
@@ -25,23 +25,6 @@ def create_save_path(dataset_id):
     if not os.path.exists(save_path):
         os.makedirs(save_path, exist_ok=True)
     return save_path
-
-def get_dataset_version(dataset_id, version=':latest-published'):
-    headers = {
-        'X-Dataverse-key': api_token
-    }
-    if version == ':latest-published':
-        url = f"{base_url}api/datasets/:persistentId/versions/:latest-published?persistentId={dataset_id}"
-    else:
-        url = f"{base_url}api/datasets/:persistentId/versions/{version}?persistentId={dataset_id}"
-    # Realizar la solicitud GET para obtener la versión del conjunto de datos
-    response = requests.get(url, headers=headers)
-    # Verificar si la solicitud fue exitosa (código 200)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print(f"Error: {response.status_code}")
-        return None
 
 def download_file(url, save_path):
     headers = {
@@ -88,9 +71,9 @@ def file_exists(file_path, checksum):
 
 def main():
     api = NativeApi(base_url,api_token)
-    dataset = get_dataset_version(dataset_id,version = dataset_version)
+    dataset = api.get_dataset_version(dataset_id,version = dataset_version)
     save_path=create_save_path(dataset_id.split("/")[1])
-    files_list = dataset['data']['files']
+    files_list = dataset.json()['data']['files']
     for file in files_list:
         filename = file["dataFile"]["filename"]
         file_id = file["dataFile"]["id"]
